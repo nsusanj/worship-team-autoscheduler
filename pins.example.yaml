@@ -1,0 +1,16 @@
+pins:
+  # Lock a specific volunteer to a role on a date
+  - date: "2026-04-06"
+    location: Auditorium
+    role: keys
+    volunteer: "James Chen"
+
+  # Lock songs for a specific Sunday
+  - date: "2026-04-06"
+    songs: ["Way Maker", "Battle Belongs", "Goodness of God"]
+
+  # Another role pin
+  - date: "2026-04-13"
+    location: Chapel
+    role: drums
+    volunteer: "Derek Young"

@@ -1,0 +1,110 @@
+songs:
+  # Established songs
+  - title: "Way Maker"
+    status: established
+    last_played: "2026-02-09"
+
+  - title: "Oceans"
+    status: established
+    last_played: "2026-01-19"
+
+  - title: "Great Are You Lord"
+    status: established
+    last_played: "2026-02-16"
+
+  - title: "10,000 Reasons"
+    status: established
+    last_played: "2026-01-26"
+
+  - title: "Build My Life"
+    status: established
+    last_played: "2026-02-02"
+
+  - title: "Goodness of God"
+    status: established
+    last_played: "2026-03-01"
+
+  - title: "What A Beautiful Name"
+    status: established
+    last_played: "2026-01-12"
+
+  - title: "Cornerstone"
+    status: established
+    last_played: "2026-02-23"
+
+  - title: "King of Kings"
+    status: established
+    last_played: "2026-01-05"
+
+  - title: "Holy Spirit"
+    status: established
+    last_played: "2026-02-09"
+
+  - title: "Reckless Love"
+    status: established
+    last_played: "2026-01-19"
+
+  - title: "How Great Is Our God"
+    status: established
+    last_played: "2026-02-16"
+
+  - title: "Open The Eyes of My Heart"
+    status: established
+    last_played: "2026-01-26"
+
+  - title: "Desert Song"
+    status: established
+    last_played: "2026-03-01"
+
+  - title: "Mighty To Save"
+    status: established
+    last_played: "2026-01-12"
+
+  - title: "Forever"
+    status: established
+    last_played: "2026-02-23"
+
+  - title: "Blessed Be Your Name"
+    status: established
+    last_played: "2026-01-05"
+
+  - title: "God So Loved"
+    status: established
+    last_played: "2026-02-02"
+
+  - title: "Living Hope"
+    status: established
+    last_played: "2026-01-19"
+
+  - title: "Raise A Hallelujah"
+    status: established
+    last_played: "2026-02-09"
+
+  # New songs (being introduced)
+  - title: "Battle Belongs"
+    status: new
+    last_played: null
+
+  - title: "Firm Foundation"
+    status: new
+    last_played: null
+
+  - title: "Promises"
+    status: new
+    last_played: null
+
+  - title: "Same God"
+    status: new
+    last_played: null
+
+  - title: "House of the Lord"
+    status: new
+    last_played: null
+
+  - title: "Champion"
+    status: new
+    last_played: null
+
+  - title: "Gratitude"
+    status: new
+    last_played: null

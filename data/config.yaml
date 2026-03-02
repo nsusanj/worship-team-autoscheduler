@@ -1,0 +1,9 @@
+block_start: "2026-04-06"
+num_sundays: 13
+locations: [Auditorium, Chapel]
+roles: [keys, drums, bass, acoustic, electric]
+vocalists_per_location: 3
+song_cooldown_weeks: 6
+songs_per_setlist: 3
+target_new_songs_per_setlist: 1
+auditorium_skill_threshold: 3
