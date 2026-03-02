@@ -76,7 +76,7 @@ vocalists_per_location: 3        # Vocalists scheduled per location per Sunday
 song_cooldown_weeks: 6           # Minimum weeks before a song repeats
 songs_per_setlist: 3             # Songs per Sunday
 target_new_songs_per_setlist: 1  # New songs to introduce per Sunday
-auditorium_skill_threshold: 3    # Min skill level for Auditorium (1–5 scale)
+auditorium_min_skill: intermediate  # Min skill for Auditorium (beginner | intermediate | advanced)
 ```
 
 ### `data/volunteers.yaml`
@@ -84,13 +84,14 @@ auditorium_skill_threshold: 3    # Min skill level for Auditorium (1–5 scale)
 ```yaml
 volunteers:
   - name: "Jane Smith"
-    can_play: [keys, acoustic]   # Instruments (empty list if vocalist only)
+    can_play: [keys, acoustic]        # Instruments (empty list if vocalist only)
+    preferred_instruments: [keys]     # Optional — subset of can_play; omit or use [] for no preference
     can_sing: true
-    skill_level: 4               # 1–5; auditorium_skill_threshold gates Auditorium
-    target_sundays: 8            # Desired number of Sundays this block
-    blocked_dates:               # Dates volunteer is unavailable (YYYY-MM-DD)
+    skill_level: advanced             # beginner | intermediate | advanced
+    target_frequency: 0.62            # Fraction of Sundays desired (0.0–1.0); e.g. 0.62 = ~8 of 13
+    blocked_dates:                    # Dates volunteer is unavailable (YYYY-MM-DD)
       - "2026-05-10"
-    auditorium_eligible: true    # Can serve at Auditorium
+    auditorium_eligible: true         # Can serve at Auditorium (auto-derived from skill if omitted)
 ```
 
 ### `data/songs.yaml`

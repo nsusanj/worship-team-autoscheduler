@@ -4,7 +4,7 @@ import sys
 from datetime import date
 from typing import Optional
 
-from .models import Config, Pin, RosterSlot, Volunteer
+from .models import Config, Pin, RosterSlot, Volunteer, SKILL_ORDER
 
 
 def build_roster(
@@ -214,11 +214,12 @@ def _solve_with_ortools(
     # ------------------------------------------------------------------
     penalty_terms: list[cp_model.IntVar] = []
 
-    # (a) Deviation from target_sundays
+    # (a) Deviation from target frequency
     # Count how many Sundays each volunteer is scheduled (instrument or vocalist)
     # A volunteer who plays and sings on the same Sunday counts as 1 service.
     FREQ_PENALTY_WEIGHT = 10
     for vi, vol in enumerate(volunteers):
+        target_sundays = round(vol.target_frequency * len(sundays))
         # Binary var: is this volunteer scheduled on Sunday si?
         scheduled_per_sunday: list[cp_model.IntVar] = []
         for si in range(len(sundays)):
@@ -241,7 +242,7 @@ def _solve_with_ortools(
 
         # abs(total - target) penalty
         diff = model.NewIntVar(-len(sundays), len(sundays), f"diff_{vi}")
-        model.Add(diff == total_scheduled - vol.target_sundays)
+        model.Add(diff == total_scheduled - target_sundays)
         abs_diff = model.NewIntVar(0, len(sundays), f"absdiff_{vi}")
         model.AddAbsEquality(abs_diff, diff)
         scaled = model.NewIntVar(0, FREQ_PENALTY_WEIGHT * len(sundays), f"freq_pen_{vi}")
@@ -253,7 +254,7 @@ def _solve_with_ortools(
     aud_li = next((i for i, l in enumerate(locations) if l == "Auditorium"), None)
     if aud_li is not None:
         for vi, vol in enumerate(volunteers):
-            if vol.skill_level < config.auditorium_skill_threshold:
+            if SKILL_ORDER[vol.skill_level] < SKILL_ORDER[config.auditorium_min_skill]:
                 for si in range(len(sundays)):
                     day_aud_vars: list[cp_model.IntVar] = []
                     for ri in range(len(roles)):
@@ -266,9 +267,30 @@ def _solve_with_ortools(
                             _scaled_bool(model, var, SKILL_PENALTY_WEIGHT, f"skill_{vi}_{si}")
                         )
 
-    # (c) Encourage even spread — penalise consecutive assignments
-    CONSEC_PENALTY_WEIGHT = 2
-    for vi in range(len(volunteers)):
+    # (c) Preferred instrument penalty — soft-penalise non-preferred assignments
+    PREF_INSTRUMENT_PENALTY_WEIGHT = 4
+    for vi, vol in enumerate(volunteers):
+        if vol.preferred_instruments:
+            non_preferred = [r for r in vol.can_play if r not in vol.preferred_instruments]
+            for ri, role in enumerate(roles):
+                if role not in non_preferred:
+                    continue
+                for si in range(len(sundays)):
+                    for li in range(len(locations)):
+                        key = (vi, si, li, ri)
+                        if key in instrument:
+                            penalty_terms.append(
+                                _scaled_bool(
+                                    model,
+                                    instrument[key],
+                                    PREF_INSTRUMENT_PENALTY_WEIGHT,
+                                    f"pref_{vi}_{si}_{li}_{ri}",
+                                )
+                            )
+
+    # (d) Encourage even spread — graduated 3-week window penalty
+    SPREAD_WEIGHTS = {1: 6, 2: 3, 3: 1}
+    for vi, vol in enumerate(volunteers):
         scheduled_flags: list[cp_model.IntVar] = []
         for si in range(len(sundays)):
             day_vars = []
@@ -285,12 +307,13 @@ def _solve_with_ortools(
                 flag = model.NewConstant(0)
             scheduled_flags.append(flag)
 
-        for si in range(len(sundays) - 1):
-            both = model.NewBoolVar(f"consec_{vi}_{si}")
-            model.AddMultiplicationEquality(both, [scheduled_flags[si], scheduled_flags[si + 1]])
-            penalty_terms.append(
-                _scaled_bool(model, both, CONSEC_PENALTY_WEIGHT, f"cp_{vi}_{si}")
-            )
+        for gap, weight in SPREAD_WEIGHTS.items():
+            for si in range(len(sundays) - gap):
+                both = model.NewBoolVar(f"spread_{vi}_{si}_{gap}")
+                model.AddMultiplicationEquality(both, [scheduled_flags[si], scheduled_flags[si + gap]])
+                penalty_terms.append(
+                    _scaled_bool(model, both, weight, f"spread_pen_{vi}_{si}_{gap}")
+                )
 
     # Minimise total penalty
     total_penalty = model.NewIntVar(0, 10_000_000, "total_penalty")
@@ -442,7 +465,7 @@ def _solve_greedy(
             instr_singers = [
                 name for name in assigned_today
                 if loc in [s.location for s in slots if s.volunteer_name == name and s.date == sunday]
-                and vol_map.get(name, Volunteer("", [], False, 0, 0, [], False)).can_sing
+                and vol_map.get(name, Volunteer("", [], [], False, "intermediate", 0.5, [], False)).can_sing
             ]
             vocal_count = min(len(instr_singers), config.vocalists_per_location)
             for name in instr_singers[:vocal_count]:
@@ -500,12 +523,17 @@ def _greedy_candidates(
         and (location != "Auditorium" or v.auditorium_eligible)
     ]
 
+    num_sundays = len(config.sundays)
+
     def sort_key(v: Volunteer):
-        remaining = v.target_sundays - assigned_count[v.name]
+        target = round(v.target_frequency * num_sundays)
+        remaining = target - assigned_count[v.name]
         lu = last_assigned[v.name]
         days_since = (sunday - lu).days if lu else 999
-        # Prioritise: (1) most behind target, (2) longest since last scheduled, (3) skill
-        return (-remaining, -days_since, -v.skill_level)
+        # Preferred instrument bonus: 1 if this role is preferred, 0 otherwise
+        pref_bonus = 1 if (v.preferred_instruments and role in v.preferred_instruments) else 0
+        # Prioritise: (1) most behind target, (2) preferred instrument, (3) longest since last, (4) skill
+        return (-remaining, -pref_bonus, -days_since, -SKILL_ORDER[v.skill_level])
 
     candidates.sort(key=sort_key)
     return candidates

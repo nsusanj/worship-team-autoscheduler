@@ -6,4 +6,4 @@ vocalists_per_location: 3
 song_cooldown_weeks: 6
 songs_per_setlist: 3
 target_new_songs_per_setlist: 1
-auditorium_skill_threshold: 3
+auditorium_min_skill: intermediate   # beginner | intermediate | advanced

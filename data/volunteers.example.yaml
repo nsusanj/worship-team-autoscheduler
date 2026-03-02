@@ -1,82 +1,86 @@
 volunteers:
-  # Auditorium-level players (skill 4-5)
+  # Auditorium-level players (advanced skill)
   - name: "James Chen"
     can_play: [keys]
     can_sing: true
-    skill_level: 5
-    target_sundays: 10
+    skill_level: advanced
+    target_frequency: 0.77
     blocked_dates: ["2026-04-20", "2026-06-07"]
     auditorium_eligible: true
 
   - name: "Maria Santos"
     can_play: [keys, acoustic]
+    preferred_instruments: [keys]
     can_sing: true
-    skill_level: 4
-    target_sundays: 8
+    skill_level: advanced
+    target_frequency: 0.62
     blocked_dates: ["2026-05-10"]
     auditorium_eligible: true
 
   - name: "David Park"
     can_play: [drums]
     can_sing: false
-    skill_level: 5
-    target_sundays: 10
+    skill_level: advanced
+    target_frequency: 0.77
     blocked_dates: ["2026-04-27"]
     auditorium_eligible: true
 
   - name: "Sarah Kim"
     can_play: [drums]
     can_sing: false
-    skill_level: 4
-    target_sundays: 7
+    skill_level: advanced
+    target_frequency: 0.54
     blocked_dates: ["2026-05-24", "2026-06-21"]
     auditorium_eligible: true
 
   - name: "Michael Torres"
     can_play: [bass]
     can_sing: true
-    skill_level: 5
-    target_sundays: 9
+    skill_level: advanced
+    target_frequency: 0.69
     blocked_dates: []
     auditorium_eligible: true
 
   - name: "Rachel Lee"
     can_play: [bass, electric]
+    preferred_instruments: [bass]
     can_sing: false
-    skill_level: 4
-    target_sundays: 7
+    skill_level: advanced
+    target_frequency: 0.54
     blocked_dates: ["2026-04-13"]
     auditorium_eligible: true
 
   - name: "Chris Wilson"
     can_play: [acoustic, electric]
+    preferred_instruments: [acoustic]
     can_sing: true
-    skill_level: 5
-    target_sundays: 10
+    skill_level: advanced
+    target_frequency: 0.77
     blocked_dates: ["2026-06-14"]
     auditorium_eligible: true
 
   - name: "Emily Johnson"
     can_play: [acoustic]
     can_sing: true
-    skill_level: 4
-    target_sundays: 8
+    skill_level: advanced
+    target_frequency: 0.62
     blocked_dates: ["2026-05-03", "2026-05-31"]
     auditorium_eligible: true
 
   - name: "Brandon Nguyen"
     can_play: [electric]
     can_sing: true
-    skill_level: 5
-    target_sundays: 9
+    skill_level: advanced
+    target_frequency: 0.69
     blocked_dates: []
     auditorium_eligible: true
 
   - name: "Ashley Davis"
     can_play: [electric, acoustic]
+    preferred_instruments: [electric]
     can_sing: true
-    skill_level: 4
-    target_sundays: 7
+    skill_level: advanced
+    target_frequency: 0.54
     blocked_dates: ["2026-04-06", "2026-06-28"]
     auditorium_eligible: true
 
@@ -84,121 +88,125 @@ volunteers:
   - name: "Lisa Thompson"
     can_play: []
     can_sing: true
-    skill_level: 5
-    target_sundays: 11
+    skill_level: advanced
+    target_frequency: 0.85
     blocked_dates: ["2026-05-17"]
     auditorium_eligible: true
 
   - name: "Kevin Martinez"
     can_play: []
     can_sing: true
-    skill_level: 4
-    target_sundays: 9
+    skill_level: advanced
+    target_frequency: 0.69
     blocked_dates: ["2026-04-20", "2026-05-03"]
     auditorium_eligible: true
 
   - name: "Jessica Anderson"
     can_play: []
     can_sing: true
-    skill_level: 5
-    target_sundays: 10
+    skill_level: advanced
+    target_frequency: 0.77
     blocked_dates: []
     auditorium_eligible: true
 
   - name: "Tyler Brown"
     can_play: []
     can_sing: true
-    skill_level: 4
-    target_sundays: 8
+    skill_level: advanced
+    target_frequency: 0.62
     blocked_dates: ["2026-06-07", "2026-06-21"]
     auditorium_eligible: true
 
   - name: "Amanda White"
     can_play: []
     can_sing: true
-    skill_level: 3
-    target_sundays: 7
+    skill_level: intermediate
+    target_frequency: 0.54
     blocked_dates: ["2026-04-13", "2026-05-10"]
     auditorium_eligible: true
 
-  # Chapel-level players (skill 2-3)
+  # Chapel-level players (intermediate/beginner skill)
   - name: "Nathan Clark"
     can_play: [keys]
     can_sing: true
-    skill_level: 3
-    target_sundays: 7
+    skill_level: intermediate
+    target_frequency: 0.54
     blocked_dates: ["2026-04-06"]
     auditorium_eligible: false
 
   - name: "Stephanie Hall"
     can_play: [keys, acoustic]
+    preferred_instruments: [keys]
     can_sing: true
-    skill_level: 2
-    target_sundays: 6
+    skill_level: beginner
+    target_frequency: 0.46
     blocked_dates: ["2026-05-24", "2026-06-14"]
     auditorium_eligible: false
 
   - name: "Derek Young"
     can_play: [drums]
     can_sing: false
-    skill_level: 3
-    target_sundays: 7
+    skill_level: intermediate
+    target_frequency: 0.54
     blocked_dates: ["2026-05-17"]
     auditorium_eligible: false
 
   - name: "Monica Garcia"
     can_play: [drums]
     can_sing: false
-    skill_level: 2
-    target_sundays: 5
+    skill_level: beginner
+    target_frequency: 0.38
     blocked_dates: ["2026-04-27", "2026-06-07"]
     auditorium_eligible: false
 
   - name: "Jason Miller"
     can_play: [bass]
     can_sing: false
-    skill_level: 3
-    target_sundays: 7
+    skill_level: intermediate
+    target_frequency: 0.54
     blocked_dates: []
     auditorium_eligible: false
 
   - name: "Patricia Robinson"
     can_play: [bass, acoustic]
+    preferred_instruments: [bass]
     can_sing: true
-    skill_level: 3
-    target_sundays: 6
+    skill_level: intermediate
+    target_frequency: 0.46
     blocked_dates: ["2026-05-03", "2026-06-28"]
     auditorium_eligible: false
 
   - name: "Andrew Lewis"
     can_play: [acoustic, electric]
+    preferred_instruments: [acoustic]
     can_sing: false
-    skill_level: 3
-    target_sundays: 7
+    skill_level: intermediate
+    target_frequency: 0.54
     blocked_dates: ["2026-04-13"]
     auditorium_eligible: false
 
   - name: "Heather Walker"
     can_play: [acoustic]
     can_sing: true
-    skill_level: 2
-    target_sundays: 5
+    skill_level: beginner
+    target_frequency: 0.38
     blocked_dates: ["2026-05-31", "2026-06-21"]
     auditorium_eligible: false
 
   - name: "Ryan Harris"
     can_play: [electric]
     can_sing: false
-    skill_level: 3
-    target_sundays: 6
+    skill_level: intermediate
+    target_frequency: 0.46
     blocked_dates: ["2026-04-20"]
     auditorium_eligible: false
 
   - name: "Melissa Scott"
     can_play: [electric, keys]
+    preferred_instruments: [keys]
     can_sing: true
-    skill_level: 3
-    target_sundays: 6
+    skill_level: intermediate
+    target_frequency: 0.46
     blocked_dates: ["2026-05-10", "2026-06-14"]
     auditorium_eligible: false
 
@@ -206,136 +214,140 @@ volunteers:
   - name: "Daniel Adams"
     can_play: []
     can_sing: true
-    skill_level: 3
-    target_sundays: 8
+    skill_level: intermediate
+    target_frequency: 0.62
     blocked_dates: ["2026-04-06"]
     auditorium_eligible: false
 
   - name: "Jennifer Baker"
     can_play: []
     can_sing: true
-    skill_level: 2
-    target_sundays: 6
+    skill_level: beginner
+    target_frequency: 0.46
     blocked_dates: ["2026-05-17", "2026-06-07"]
     auditorium_eligible: false
 
   - name: "Christopher Nelson"
     can_play: []
     can_sing: true
-    skill_level: 3
-    target_sundays: 7
+    skill_level: intermediate
+    target_frequency: 0.54
     blocked_dates: []
     auditorium_eligible: false
 
   - name: "Samantha Carter"
     can_play: []
     can_sing: true
-    skill_level: 2
-    target_sundays: 5
+    skill_level: beginner
+    target_frequency: 0.38
     blocked_dates: ["2026-04-27", "2026-05-24"]
     auditorium_eligible: false
 
   # Mixed eligibility (can play at both)
   - name: "Matthew Evans"
     can_play: [keys, acoustic]
+    preferred_instruments: [keys]
     can_sing: true
-    skill_level: 4
-    target_sundays: 8
+    skill_level: advanced
+    target_frequency: 0.62
     blocked_dates: ["2026-05-10", "2026-05-31"]
     auditorium_eligible: true
 
   - name: "Lauren Turner"
     can_play: [acoustic, electric]
+    preferred_instruments: [acoustic]
     can_sing: true
-    skill_level: 3
-    target_sundays: 7
+    skill_level: intermediate
+    target_frequency: 0.54
     blocked_dates: ["2026-04-20", "2026-06-21"]
     auditorium_eligible: true
 
   - name: "Joshua Phillips"
     can_play: [bass]
     can_sing: true
-    skill_level: 4
-    target_sundays: 8
+    skill_level: advanced
+    target_frequency: 0.62
     blocked_dates: ["2026-06-07"]
     auditorium_eligible: true
 
   - name: "Caroline Campbell"
     can_play: [drums]
     can_sing: false
-    skill_level: 3
-    target_sundays: 6
+    skill_level: intermediate
+    target_frequency: 0.46
     blocked_dates: ["2026-04-13", "2026-05-17"]
     auditorium_eligible: true
 
   - name: "Nicholas Parker"
     can_play: [electric]
     can_sing: true
-    skill_level: 4
-    target_sundays: 8
+    skill_level: advanced
+    target_frequency: 0.62
     blocked_dates: ["2026-05-03"]
     auditorium_eligible: true
 
   - name: "Brittany Edwards"
     can_play: []
     can_sing: true
-    skill_level: 4
-    target_sundays: 9
+    skill_level: advanced
+    target_frequency: 0.69
     blocked_dates: ["2026-04-06", "2026-06-28"]
     auditorium_eligible: true
 
   - name: "Gregory Collins"
     can_play: [keys]
     can_sing: false
-    skill_level: 3
-    target_sundays: 6
+    skill_level: intermediate
+    target_frequency: 0.46
     blocked_dates: ["2026-05-24"]
     auditorium_eligible: true
 
   - name: "Vanessa Stewart"
     can_play: []
     can_sing: true
-    skill_level: 3
-    target_sundays: 7
+    skill_level: intermediate
+    target_frequency: 0.54
     blocked_dates: ["2026-04-27", "2026-06-14"]
     auditorium_eligible: true
 
   - name: "Patrick Morris"
     can_play: [bass, acoustic]
+    preferred_instruments: [bass]
     can_sing: true
-    skill_level: 4
-    target_sundays: 8
+    skill_level: advanced
+    target_frequency: 0.62
     blocked_dates: []
     auditorium_eligible: true
 
   - name: "Diana Rogers"
     can_play: []
     can_sing: true
-    skill_level: 5
-    target_sundays: 10
+    skill_level: advanced
+    target_frequency: 0.77
     blocked_dates: ["2026-05-10", "2026-05-17"]
     auditorium_eligible: true
 
   - name: "Scott Reed"
     can_play: [drums]
     can_sing: false
-    skill_level: 4
-    target_sundays: 7
+    skill_level: advanced
+    target_frequency: 0.54
     blocked_dates: ["2026-04-13", "2026-06-07"]
     auditorium_eligible: true
 
   - name: "Amber Cook"
     can_play: [acoustic, electric]
+    preferred_instruments: [acoustic]
     can_sing: true
-    skill_level: 3
-    target_sundays: 6
+    skill_level: intermediate
+    target_frequency: 0.46
     blocked_dates: ["2026-05-31"]
     auditorium_eligible: false
 
   - name: "Victor Morgan"
     can_play: [keys]
     can_sing: true
-    skill_level: 3
-    target_sundays: 6
+    skill_level: intermediate
+    target_frequency: 0.46
     blocked_dates: ["2026-04-06", "2026-05-03"]
     auditorium_eligible: false

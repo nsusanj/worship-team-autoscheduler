@@ -5,13 +5,17 @@ from datetime import date
 from typing import Optional
 
 
+SKILL_ORDER: dict[str, int] = {"beginner": 1, "intermediate": 2, "advanced": 3}
+
+
 @dataclass
 class Volunteer:
     name: str
-    can_play: list[str]          # list of instrument roles (keys, drums, bass, acoustic, electric)
+    can_play: list[str]               # list of instrument roles (keys, drums, bass, acoustic, electric)
+    preferred_instruments: list[str]  # subset of can_play; [] = no preference
     can_sing: bool
-    skill_level: int             # 1–5
-    target_sundays: int          # desired appearances in the block
+    skill_level: str                  # "beginner" | "intermediate" | "advanced"
+    target_frequency: float           # 0.0–1.0 (fraction of Sundays desired)
     blocked_dates: list[date]
     auditorium_eligible: bool
 
@@ -48,7 +52,7 @@ class Config:
     song_cooldown_weeks: int
     songs_per_setlist: int
     target_new_songs_per_setlist: int
-    auditorium_skill_threshold: int
+    auditorium_min_skill: str    # "beginner" | "intermediate" | "advanced"
 
     @property
     def sundays(self) -> list[date]:

@@ -122,12 +122,12 @@ def _plain_output(schedule, config, volunteers) -> None:
 
 def _print_volunteer_summary(schedule, config, volunteers, tabulate_fn) -> None:
     rows = _volunteer_summary_rows(schedule, config, volunteers)
-    print(tabulate_fn(rows, headers=["Volunteer", "Assigned", "Target", "Delta"], tablefmt="simple"))
+    print(tabulate_fn(rows, headers=["Volunteer", "Assigned", "Target%", "Delta"], tablefmt="simple"))
 
 
 def _print_volunteer_summary_plain(schedule, config, volunteers) -> None:
     rows = _volunteer_summary_rows(schedule, config, volunteers)
-    print(f"{'Volunteer':<30} {'Assigned':>8} {'Target':>8} {'Delta':>6}")
+    print(f"{'Volunteer':<30} {'Assigned':>8} {'Target%':>8} {'Delta':>6}")
     print("-" * 56)
     for row in rows:
         print(f"{row[0]:<30} {row[1]:>8} {row[2]:>8} {row[3]:>+6}")
@@ -139,9 +139,12 @@ def _volunteer_summary_rows(schedule, config, volunteers) -> list[tuple]:
     for slot in schedule.roster:
         sunday_per_vol[slot.volunteer_name].add(slot.date)
 
+    num_sundays = config.num_sundays
     rows = []
     for vol in sorted(volunteers, key=lambda v: v.name):
         assigned = len(sunday_per_vol[vol.name])
-        delta = assigned - vol.target_sundays
-        rows.append((vol.name, assigned, vol.target_sundays, f"{delta:+d}"))
+        target_sundays = round(vol.target_frequency * num_sundays)
+        delta = assigned - target_sundays
+        target_pct = f"{vol.target_frequency * 100:.0f}%"
+        rows.append((vol.name, assigned, target_pct, f"{delta:+d}"))
     return rows

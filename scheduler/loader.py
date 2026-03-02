@@ -7,7 +7,7 @@ from typing import Optional
 
 import yaml
 
-from .models import Config, Pin, Song, Volunteer
+from .models import Config, Pin, Song, Volunteer, SKILL_ORDER
 
 
 # ---------------------------------------------------------------------------
@@ -43,6 +43,14 @@ def _load_yaml(path: str | Path) -> dict:
 
 def load_config(path: str | Path) -> Config:
     raw = _load_yaml(path)
+    aud_min_skill = str(raw.get("auditorium_min_skill", "intermediate"))
+    if aud_min_skill not in SKILL_ORDER:
+        print(
+            f"Warning: config 'auditorium_min_skill' value '{aud_min_skill}' is not valid "
+            "(expected beginner, intermediate, or advanced). Defaulting to 'intermediate'.",
+            file=sys.stderr,
+        )
+        aud_min_skill = "intermediate"
     return Config(
         block_start=_parse_date(raw["block_start"]),
         num_sundays=int(raw["num_sundays"]),
@@ -52,7 +60,7 @@ def load_config(path: str | Path) -> Config:
         song_cooldown_weeks=int(raw["song_cooldown_weeks"]),
         songs_per_setlist=int(raw["songs_per_setlist"]),
         target_new_songs_per_setlist=int(raw["target_new_songs_per_setlist"]),
-        auditorium_skill_threshold=int(raw["auditorium_skill_threshold"]),
+        auditorium_min_skill=aud_min_skill,
     )
 
 
@@ -60,18 +68,58 @@ def load_volunteers(path: str | Path) -> list[Volunteer]:
     raw = _load_yaml(path)
     volunteers: list[Volunteer] = []
     for entry in raw.get("volunteers", []):
-        skill = int(entry.get("skill_level", 3))
+        skill = str(entry.get("skill_level", "intermediate"))
+        if skill not in SKILL_ORDER:
+            print(
+                f"Warning: volunteer '{entry.get('name', '?')}' has unknown skill_level '{skill}'. "
+                "Expected beginner, intermediate, or advanced. Defaulting to 'intermediate'.",
+                file=sys.stderr,
+            )
+            skill = "intermediate"
+
+        can_play = [r.strip() for r in (entry.get("can_play") or [])]
+
+        preferred = [r.strip() for r in (entry.get("preferred_instruments") or [])]
+        for pref in preferred:
+            if pref not in can_play:
+                print(
+                    f"Warning: volunteer '{entry.get('name', '?')}' lists preferred instrument "
+                    f"'{pref}' that is not in can_play. Ignoring.",
+                    file=sys.stderr,
+                )
+        preferred = [p for p in preferred if p in can_play]
+
+        freq = entry.get("target_frequency", 0.5)
+        try:
+            freq = float(freq)
+        except (TypeError, ValueError):
+            print(
+                f"Warning: volunteer '{entry.get('name', '?')}' has invalid target_frequency '{freq}'. "
+                "Defaulting to 0.5.",
+                file=sys.stderr,
+            )
+            freq = 0.5
+        if not (0.0 < freq <= 1.0):
+            print(
+                f"Warning: volunteer '{entry.get('name', '?')}' has target_frequency {freq} outside "
+                "(0.0, 1.0]. Clamping to 0.5.",
+                file=sys.stderr,
+            )
+            freq = 0.5
+
         # Derive auditorium_eligible from skill_level if not explicitly set
         aud_eligible = entry.get("auditorium_eligible")
         if aud_eligible is None:
-            aud_eligible = skill >= 3
+            aud_eligible = SKILL_ORDER[skill] >= SKILL_ORDER["intermediate"]
+
         volunteers.append(
             Volunteer(
                 name=str(entry["name"]),
-                can_play=[r.strip() for r in (entry.get("can_play") or [])],
+                can_play=can_play,
+                preferred_instruments=preferred,
                 can_sing=bool(entry.get("can_sing", False)),
                 skill_level=skill,
-                target_sundays=int(entry.get("target_sundays", 6)),
+                target_frequency=freq,
                 blocked_dates=_parse_date_list(entry.get("blocked_dates")),
                 auditorium_eligible=bool(aud_eligible),
             )
@@ -149,8 +197,8 @@ def _validate_volunteers(volunteers: list[Volunteer]) -> None:
                     f"Warning: volunteer '{v.name}' lists unknown role '{role}' in can_play.",
                     file=sys.stderr,
                 )
-        if not (1 <= v.skill_level <= 5):
+        if v.skill_level not in SKILL_ORDER:
             print(
-                f"Warning: volunteer '{v.name}' has skill_level {v.skill_level} outside 1–5.",
+                f"Warning: volunteer '{v.name}' has invalid skill_level '{v.skill_level}'.",
                 file=sys.stderr,
             )
